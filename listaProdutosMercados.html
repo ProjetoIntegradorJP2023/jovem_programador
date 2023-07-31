@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Listagem de Produtos</title>
+  <style>
+    body {
+      background-color: #111;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    .header {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      align-items: end;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      display: flex;
+      align-items: right;
+    }
+
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px;
+      background-color: #3498db;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .menu a:hover {
+      background-color: #2980b9;
+    }
+
+    .container {
+      margin: 20px;
+      text-align: left;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 32px;
+      background-color: #222;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #fff;
+    }
+
+    th {
+      background-color: #222;
+      color: #fff;
+    }
+
+    td .btn-container {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    button {
+      margin-right: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ECONOMIZANDO!</h1>
+    <div class="menu">
+      <a href="#">Pesquisar Produtos</a>
+      <a href="#">Consultar Supermercados</a>
+      <a href="#">Minha Conta</a>
+      <a href="#">Sair</a>
+    </div>
+  </div>
+  <div class="container">
+    <h1>Listagem de Produtos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Preço</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Produto 1</td>
+          <td>R$ 9,99</td>
+          <td>
+            <div class="btn-container">
+              <button type="button">Editar</button>
+              <button type="button">Visualizar</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Produto 2</td>
+          <td>R$ 19,99</td>
+          <td>
+            <div class="btn-container">
+              <button type="button">Editar</button>
+              <button type="button">Visualizar</button>
+            </div>
+          </td>
+        </tr>
+        <!-- Adicione mais linhas para cada produto -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
