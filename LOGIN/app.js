@@ -2,72 +2,100 @@ require('dotenv').config();
 const pg = require('pg');
 const bodyParser = require('body-parser');
 const express = require('express');
-const jsonwebtoken = require('jsonwebtoken');
-//const {Sequelize, DataTypes} = require('sequelize');
+const jsonWebToken = require('jsonwebtoken');
+
+const {Sequelize, DataTypes} = require('sequelize');
 
 const app = express();
 app.use(bodyParser.json());
 
-app.listen(3000, async () => {
-    console.log('Rodando.')
-})
+const sequelize = new Sequelize({
+    dialect: 'postgres',
+    database: 'projeto_mercado',
+    host: 'localhost',
+    username: 'postgres',
+    password: 'masterkey'
+    
+  });
 
-async function connect() {
-    if (global.connection)
-        return global.connection.connect();
- 
-    const { Pool } = require('pg');
-    const pool = new Pool({
-        connectionString: process.env.CONNECTION_STRING
+  app.listen(3000, async () => {
+    await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
+  });
+
+  const Usuario = sequelize.define('usuario', {
+    id_cidade: {
+      type: DataTypes.INTEGER,
+    },
+    cep: {
+      type: DataTypes.STRING,
+    },
+    nome: {
+      type: DataTypes.STRING,
+    },
+    dt_nascimento: {
+        type: DataTypes.STRING,
+    },
+    endereco_usuarios: {
+        type: DataTypes.STRING,
+    },
+    bairro_usuario: {
+        type: DataTypes.STRING,
+    },
+    email: {
+        type: DataTypes.STRING,
+    },
+    senha: {
+        type: DataTypes.STRING,
+    },
+    cpf_cnpj: {
+        type: DataTypes.STRING,
+    },
+    tipo_usuario: {
+        type: DataTypes.STRING,
+    },
+    status: {
+        type: DataTypes.STRING,
+    },
+  });
+
+
+  async function cadastrarUsuario(req, res) {
+    const usuario = await Usuario.create({
+      id_cidade: req.body.id_cidade,
+      cep: req.body.cep,
+      nome: req.body.nome,
+      dt_nascimento: req.body.dt_nascimento,
+      endereco_usuarios: req.body.endereco_usuarios,
+      bairro_usuario: req.body.bairro_usuario,
+      email: req.body.email,
+      senha: req.body.senha,
+      cpf_cnpj: req.body.cpf_cnpj,
+      tipo_usuario: req.body.tipo_usuario,
+      status: req.body.status,
     });
- 
-    //apenas testando a conexão
-    const client = await pool.connect();
-    console.log("Criou pool de conexões no PostgreSQL!");
- 
-    // const res = await client.query('select * from cidades where id_cidade = $1', ['1100114']);
-    // console.log(res.rows[0]);
-    // client.release();
- 
-    //guardando para usar sempre o mesmo
-    global.connection = pool;
-    return pool.connect();
-}
+    res.json(usuario);
+  }
 
-async function cadastroUsuario(req, res){
-    const client = await connect();
-    const sqlConsulta = await client.query("select id_usuario from usuarios where email = $1", [req.body.email])
-
-    if (sqlConsulta.rowCount == 0){
-        const sql = "INSERT INTO usuarios(id_cidade, cep, nome, dt_nascimento, endereco_usuario, bairro_usuario, email, senha, cpf_cnpj, tipo_usuario, status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'U','A');";
-        const values = [
-            req.body.cidade, 
-            req.body.cep, 
-            req.body.nome,
-            req.body.dt_nascimento,
-            req.body.endereco,
-            req.body.bairro,
-            req.body.email,
-            req.body.senha,
-            req.body.cpf
-        ];
-        client.query(sql, values);
-        res.json({message: "cadastro realizado"});
-    } else {
-        res.json({message: "o email informado já existe!"});
+  async function login(req, res) {
+    const usuario = await Usuario.findOne({
+      where: {
+        email: req.body.email,
+        senha: req.body.senha,
+      },
+    });
+    if (usuario.senha === req.body.senha) {
+        const token = jsonWebToken.sign(
+          {
+            usuario: usuario,
+          },
+          process.env.JWT_SECRET
+        );
+        res.json({
+          token: token,
+        });
+      }
     }
-}
 
-async function login(req, res){
-    const client = await connect();
-    const sqlConsulta = await client.query("select id_usuario from usuarios where email = $1 and senha = $2", [req.body.email, req.body.senha]);
-
-    if (sqlConsulta.rowCount === 1) {
-        res.json({message: "login efetuado com sucesso."})
-    } else {
-        res.json({message: "algum parâmetro informado está incorreto, tente novamente."})
-    }
-}
-
-app.post('/cadastrar', cadastroUsuario);
+app.post('/cadastrar', cadastrarUsuario);
 app.post('/login', login);
