@@ -97,5 +97,75 @@ const sequelize = new Sequelize({
       }
     }
 
+    async function authMiddleware(req, res, next) {
+      const token = req.headers.authorization;
+      try {
+        jsonWebToken.verify(token, process.env.JWT_SECRET);
+        next();
+        } catch (error) {
+          res.status(401).send(error.message);
+        }
+    }
+
+    async function buscarUsuarios(req, res) {
+      const usuarios = await Usuario.findAll();
+      res.json(usuarios);
+    }
+
+    const Produtos = sequelize.define('produtos', {
+      id_usuariom: {
+        type: DataTypes.INTEGER,
+      },
+      descricao_produto: {
+        type: DataTypes.STRING,
+      },
+      preco_produto: {
+        type: DataTypes.FLOAT,
+      },
+      observacao_produto: {
+        type: DataTypes.STRING,
+      },
+      marca_produto: {
+        type: DataTypes.STRING,
+      },
+      peso_produto: {
+        type: DataTypes.FLOAT,
+      },
+      imagem: {
+        type: DataTypes.STRING,
+      },
+      cod_referencial: {
+        type: DataTypes.INTEGER
+      },
+    });
+
+    async function cadastrarProdutos(req, res) {
+      const usuario = await Produtos.create({
+        id_usuariom: req.body.id_usuariom,
+        descricao_produto: req.body.descricao_produto,
+        preco_produto: req.body.preco_produto,
+        observacao_produto: req.body.observacao_produto,
+        marca_produto: req.body.marca_produto,
+        peso_produto: req.body.peso_produto,
+        imagem: req.body.imagem,
+        cod_referencial: req.body.cod_referencial,
+      });
+      res.json(usuario);
+    }
+
+    async function buscarProdutos(req, res) {
+      const produtos = await Produtos.findAll();
+      res.json(produtos);
+    };
+
+   
+
+
+
+
 app.post('/cadastrar', cadastrarUsuario);
 app.post('/login', login);
+app.use(authMiddleware);
+app.get('/buscarClientes', buscarUsuarios);
+app.post('/createProdutos', cadastrarProdutos);
+app.get('/getProdutos', buscarProdutos);
