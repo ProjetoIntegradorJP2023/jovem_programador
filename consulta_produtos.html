@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Economizando!</title>
+  </head>
+  <body>
+    <h1>CONSULTA DE PRODUTOS</h1>
+    <form id="consulta-produtos">
+      <label for="descricao-produto">Nome do Produto:</label>
+      <input
+        type="text"
+        id="descricao-produto"
+        name="descricao-produto"
+      /><br /><br />
+      <label for="marca">Marca do Produto:</label>
+      <input type="text" name="marca" id="marca" /><br /><br />
+      <label for="uf">Estado:</label>
+      <select name="uf" id="uf">
+        <option value="">Selecione...</option>
+      </select>
+      <br /><br /><!--seleção de uf do usuario-->
+      <label for="cidades">Cidade:</label>
+      <select name="cidades" id="cidades">
+        <option value="">Selecione...</option></select
+      ><br /><br />
+      <label for="mercado">Mercado:</label>
+      <select name="mercado" id="mercado">
+        <option value="">Selecione...</option></select
+      ><br /><br />
+      <!-- <label for="preco_alto">Preço máximo desejado:</label>
+        <input type="number" id="preco_alto" name="preco_alto"><br><br>
+        <label for="observacao">Observação:</label>
+        <input type="text" id="observacao" name="observacao"><br><br> -->
+      <input type="submit" id="send" />
+    </form>
+    <br /><br /><br /><br />
+    <h1>LISTA DE PRODUTOS:</h1>
+    <ul id="lista-produtos"></ul>
+
+    <script>
+      async function buscaMercados() {
+        const response = await fetch(
+          `http://localhost:3000/mercados?id_cidade=${
+            document.getElementById("cidades").value
+          }`
+        );
+        const data = await response.json();
+
+        const select = document.getElementById("mercado");
+
+        data.forEach(function (data, indice) {
+          const option = document.createElement("option");
+          option.value = data.id;
+          option.innerHTML = data.nome;
+          select.appendChild(option);
+        });
+      }
+
+      /*     const selectCidades = document.getElementById('cidades');
+        selectCidades.addEventListener('change', () => {
+            const cidade = selectCidades.value;
+            buscaMercados(cidade);
+        });
+        buscaMercados();
+   */
+      async function carregarUfs() {
+        const select = document.getElementById("uf");
+        const resposta = await fetch(
+          "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
+        );
+        const estados = await resposta.json();
+        estados.forEach(function (estado) {
+          const option = document.createElement("option");
+          option.value = estado.sigla;
+          option.innerHTML = estado.sigla;
+          select.appendChild(option);
+        });
+      }
+      carregarUfs();
+
+      async function buscarCidades() {
+        const uf = document.getElementById("uf").value;
+        const resposta = await fetch(
+          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`
+        );
+        const cidades = await resposta.json();
+        const select = document.getElementById("cidades");
+        select.innerHTML = "";
+        cidades.forEach(function (cidade) {
+          const option = document.createElement("option");
+          option.value = cidade.id;
+          option.innerHTML = cidade.nome;
+          select.appendChild(option);
+        });
+      }
+      document.getElementById("uf").addEventListener("change", buscarCidades);
+
+      document
+        .getElementById("cidades")
+        .addEventListener("change", buscaMercados);
+
+      //inicio: consulta de produtos
+      document
+        .getElementById("consulta-produtos")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(event.target);
+          const queryParams = new URLSearchParams(formData).toString();
+
+          try {
+            const response = await fetch(
+              `http://localhost:3000/produtos?${queryParams}`
+            );
+            const data = await response.json();
+            const resultList = document.getElementById("lista-produtos");
+            resultList.innerHTML = "";
+
+            data.forEach((item) => {
+              const listItem = document.createElement("li");
+              listItem.innerHTML = `
+                        <strong>Nome do Mercado:</strong> ${item.Usuario.nome_do_mercado}<br>
+                        <strong>Descrição do Produto:</strong> ${item.descricao_produto}<br>
+                        <strong>Preço do Produto:</strong> ${item.preco_produto}<br>
+                        <strong>Observação do Produto:</strong> ${item.observacao_produto}<br>
+                        <strong>Marca do Produto:</strong> ${item.marca_produto}<br>
+                        <strong>Peso do Produto:</strong> ${item.peso_produto}<br>
+                        <strong>Data de Criação:</strong> ${item.createdAt}<br>
+                        <strong>Data de Atualização:</strong> ${item.updatedAt}<br>
+                    `;
+              resultList.appendChild(listItem);
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        });
+    </script>
+  </body>
+</html>
