@@ -4,29 +4,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Economizando!</title>
+    <style>
+      /* Estilos para o popup */
+      .popup {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          padding: 20px;
+          background: #fff;
+          border: 1px solid #ccc;
+          box-shadow: 0px 0px 10px #999;
+          z-index: 1000;
+      }
+
+      /* Estilos para o overlay de fundo */
+      .overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 999;
+      }
+
+      /* Estilos para fechar o popup */
+      .close {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+      }
+  </style>
   </head>
   <body>
     <h1>CONSULTA DE PRODUTOS</h1>
     <form id="consulta-produtos">
-      <label for="descricao-produto">Nome do Produto:</label>
+      <label for="descricao_produto">Nome do Produto:</label>
       <input
         type="text"
-        id="descricao-produto"
-        name="descricao-produto"
+        id="descricao_produto"
+        name="descricao_produto"
       /><br /><br />
-      <label for="marca">Marca do Produto:</label>
-      <input type="text" name="marca" id="marca" /><br /><br />
+      <label for="marca_produto">Marca do Produto:</label>
+      <input type="text" name="marca_produto" id="marca_produto" /><br /><br />
       <label for="uf">Estado:</label>
       <select name="uf" id="uf">
         <option value="">Selecione...</option>
       </select>
       <br /><br /><!--seleção de uf do usuario-->
-      <label for="cidades">Cidade:</label>
-      <select name="cidades" id="cidades">
+      <label for="id_cidade">Cidade:</label>
+      <select name="id_cidade" id="id_cidade">
         <option value="">Selecione...</option></select
       ><br /><br />
-      <label for="mercado">Mercado:</label>
-      <select name="mercado" id="mercado">
+      <label for="id_mercado">Mercado:</label>
+      <select name="id_mercado" id="id_mercado">
         <option value="">Selecione...</option></select
       ><br /><br />
       <!-- <label for="preco_alto">Preço máximo desejado:</label>
@@ -36,19 +71,29 @@
       <input type="submit" id="send" />
     </form>
     <br /><br /><br /><br />
-    <h1>LISTA DE PRODUTOS:</h1>
-    <ul id="lista-produtos"></ul>
+    <h1>LISTA DE PRODUTOS</h1>
+    <table border="1" width="100%">
+      <thead>
+        <th>Descrição do Produto</th>
+        <th>Marca do Produto</th>
+        <th>Preço do Produto</th>
+        <th>Observação do Produto</th>
+        <th>Peso do Produto</th>
+        <th>Última Modificação</th>
+      </thead>
+      <tbody id="lista-produtos"></tbody>
+    </table>
 
     <script>
       async function buscaMercados() {
         const response = await fetch(
           `http://localhost:3000/mercados?id_cidade=${
-            document.getElementById("cidades").value
+            document.getElementById("id_cidade").value
           }`
         );
         const data = await response.json();
 
-        const select = document.getElementById("mercado");
+        const select = document.getElementById("id_mercado");
 
         data.forEach(function (data, indice) {
           const option = document.createElement("option");
@@ -56,6 +101,10 @@
           option.innerHTML = data.nome;
           select.appendChild(option);
         });
+
+//        document.getElementsByid().submit();
+//        document.getElementById("consulta-produtos").submit().event.preventDefault();
+        
       }
 
       /*     const selectCidades = document.getElementById('cidades');
@@ -86,20 +135,53 @@
           `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`
         );
         const cidades = await resposta.json();
-        const select = document.getElementById("cidades");
+        const select = document.getElementById("id_cidade");
         select.innerHTML = "";
         cidades.forEach(function (cidade) {
           const option = document.createElement("option");
           option.value = cidade.id;
           option.innerHTML = cidade.nome;
+/*          
+          if (index == 0) {
+            option.selected = true;
+            
+          }  */
           select.appendChild(option);
         });
+        verifica_cidade = Array.from(document.querySelectorAll('#id_cidade option:checked'));
+
+        if (verifica_cidade.length > 0) {
+          buscaMercados();
+        }
+        
       }
       document.getElementById("uf").addEventListener("change", buscarCidades);
 
       document
-        .getElementById("cidades")
+        .getElementById("id_cidade")
         .addEventListener("change", buscaMercados);
+
+      function formatarData(data) {
+        const dataObj = new Date(data);
+        const dia = String(dataObj.getDate()).padStart(2, "0");
+        const mes = String(dataObj.getMonth() + 1).padStart(2, "0");
+        const ano = dataObj.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+      }
+
+      function closePopup() {
+                const popup = document.querySelector('.popup');
+                const overlay = document.querySelector('.overlay');
+                
+                if (popup && overlay) {
+                    popup.style.display = 'none';
+                    overlay.style.display = 'none';
+
+                    // Remova o popup e o overlay do DOM
+                    popup.parentNode.removeChild(popup);
+                    overlay.parentNode.removeChild(overlay);
+                }
+      }      
 
       //inicio: consulta de produtos
       document
@@ -118,19 +200,71 @@
             const resultList = document.getElementById("lista-produtos");
             resultList.innerHTML = "";
 
+            function openPopup(item) {
+              // Crie um popup com informações específicas do produto
+              var peso_formatado =
+                item.peso_produto.toFixed(2).replace(".", ",") +
+                item.unid_medida_produto;
+              const productPopup = document.createElement("div");
+              productPopup.className = "popup";
+              productPopup.innerHTML = `
+                    <span class="close" onclick="closePopup()">X</span>
+                    <h2>Informações do Produto</h2>
+                    <p>Descrição: ${item.descricao_produto}</p>
+                    <p>Marca: ${item.marca_produto}</p>
+                    <p>Preço: R$${item.preco_produto
+                      .toFixed(2)
+                      .replace(".", ",")}</p>
+                    <p>Observação: ${item.observacao_produto}</p>
+                    <p>Peso: ${peso_formatado}</p>
+                    <p>Data de Atualização: ${formatarData(item.updatedAt)}</p>
+                `;
+
+              resultList.appendChild(productPopup);
+
+              // Exiba o popup
+              productPopup.style.display = "block";
+
+              // Exiba o overlay de fundo
+              const overlay = document.createElement("div");
+              overlay.className = "overlay";
+              document.body.appendChild(overlay);
+            }
+
+            // Função para fechar o popup
+
             data.forEach((item) => {
-              const listItem = document.createElement("li");
+              const listItem = document.createElement("tr");
+              var peso_formatado =
+                item.peso_produto.toFixed(2).replace(".", ",") +
+                item.unid_medida_produto;
               listItem.innerHTML = `
-                        <strong>Nome do Mercado:</strong> ${item.Usuario.nome_do_mercado}<br>
-                        <strong>Descrição do Produto:</strong> ${item.descricao_produto}<br>
-                        <strong>Preço do Produto:</strong> ${item.preco_produto}<br>
-                        <strong>Observação do Produto:</strong> ${item.observacao_produto}<br>
-                        <strong>Marca do Produto:</strong> ${item.marca_produto}<br>
-                        <strong>Peso do Produto:</strong> ${item.peso_produto}<br>
-                        <strong>Data de Criação:</strong> ${item.createdAt}<br>
-                        <strong>Data de Atualização:</strong> ${item.updatedAt}<br>
+                          <td style="text-align: left;">${
+                            item.descricao_produto
+                          }</td>
+                          <td style="text-align: left;">${
+                            item.marca_produto
+                          }</td>
+                          <td style="text-align: right;">R$${item.preco_produto
+                            .toFixed(2)
+                            .replace(".", ",")}</td>
+                          <td style="text-align: left;">${
+                            item.observacao_produto
+                          }</td>
+                          <td style="text-align: right;">${peso_formatado}</td> 
+                          <td style="text-align: center;">${formatarData(
+                            item.updatedAt
+                          )}</td> 
+                          <td style="text-align: center;">
+                            <button class="openPopupButton" onclick="openPopup(${JSON.stringify(
+                              item
+                            )})">Mostrar Produto</button>
+                          </td>
                     `;
               resultList.appendChild(listItem);
+              const openPopupButton =
+                listItem.querySelector(".openPopupButton");
+              openPopupButton.addEventListener("click", () => openPopup(item));
             });
           } catch (error) {
             console.error(error);

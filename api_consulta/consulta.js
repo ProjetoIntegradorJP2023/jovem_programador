@@ -27,7 +27,7 @@ const sequelize = new Sequelize({
   database: "api",
   host: "localhost",
   username: "postgres",
-  password: "JovemP*2023",
+  password: "1234",
 });
 
 app.listen(3000, async () => {
@@ -38,6 +38,12 @@ app.listen(3000, async () => {
 app.use(cors());
 
 const Usuarios = sequelize.define("usuarios", {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    field: "id",
+  },
   id_cidade: {
     type: DataTypes.INTEGER,
   },
@@ -102,12 +108,22 @@ const Produto = sequelize.define("produtos", {
   imagem: {
     type: DataTypes.BLOB,
   },
+  unid_medida_produto: {
+    type: DataTypes.STRING,
+  },
+});
+
+Produto.belongsTo(Usuarios, {
+  foreignKey: {
+    name: "id_mercado",
+  },
 });
 
 const Cidades = sequelize.define("cidades", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    field: "id",
   },
   uf: {
     type: DataTypes.TEXT(2),
@@ -117,62 +133,93 @@ const Cidades = sequelize.define("cidades", {
   },
 });
 
-// const valores = [];
+Usuarios.belongsTo(Cidades, {
+  foreignKey: {
+    name: "id_cidade",
+  },
+});
 
-// for (let i = 0; i < 100; i++) {
-//     const id_mercado = Math.floor(Math.random() * 100);
-//     const descricao_produto = `Produto ${i + 1}`;
-//     const preco_produto = Math.floor(Math.random() * 10000);
-//     const observacao_produto = `Observação ${i + 1}`;
-//     const dt_cadastro = new Date();
-//     const marca_produto = `Marca ${i + 1}`;
-//     const peso_produto = Math.floor(Math.random() * 1000);
+const valores = [];
 
-//     valores.push({
-//         id_mercado,
-//         descricao_produto,
-//         preco_produto,
-//         observacao_produto,
-//         dt_cadastro,
-//         marca_produto,
-//         peso_produto,
-//     });
-// }
-// criarValores()
-// async function criarValores() {
-//     await Produto.bulkCreate(valores);
-// }
+for (let i = 0; i < 100; i++) {
+  const id_mercado = Math.floor(Math.random() * (4 - 1) + 1);
+  const descricao_produto = `Produto ${i + 1}`;
+  const preco_produto = Math.random() * 100;
+  const observacao_produto = `Observação ${i + 1}`;
+  const dt_cadastro = new Date();
+  const marca_produto = `Marca ${i + 1}`;
+  const peso_produto = Math.random() * 10;
+  var unid_medida_produto;
+  const numero_random = Math.floor(Math.random() * 4);
+  if (numero_random == 1) {
+    unid_medida_produto = "g";
+  } else if (numero_random == 2) {
+    unid_medida_produto = "Kg";
+  } else if (numero_random == 3) {
+    unid_medida_produto = "ml";
+  } else if (numero_random == 4) {
+    unid_medida_produto = "L";
+  }
+
+  valores.push({
+    id_mercado,
+    descricao_produto,
+    preco_produto,
+    observacao_produto,
+    dt_cadastro,
+    marca_produto,
+    peso_produto,
+    unid_medida_produto,
+  });
+}
+criarValores();
+async function criarValores() {
+  await Produto.bulkCreate(valores);
+}
 
 async function buscaProdutos(req, res) {
-  const { nome, id_mercado, uf, id_cidade, marca } = req.query;
+  const { descricao_produto, id_mercado, uf, id_cidade, marca_produto } =
+    req.query;
   try {
+    const whereClause = {};
+
+    whereClause.descricao_produto = {
+      [Op.like]: `%${descricao_produto}%` || null,
+    };
+
+    whereClause.marca_produto = {
+      [Op.like]: `%${marca_produto}%` || null,
+    };
+
+    if (id_mercado) {
+      whereClause.id_mercado = id_mercado;
+    }
+
+    const usuariosWhere = {};
+    if (id_cidade) {
+      usuariosWhere.id_cidade = id_cidade;
+    }
+
     const produtos = await Produto.findAll({
-      where: {
-        descricao_produto: {
-          [Op.like]: `%${nome}%`,
-        },
-        marca_produto: {
-          [Op.like]: `%${marca}%`,
-        },
-        id_mercado: id_mercado,
-      },
+      where: whereClause,
       include: [
         {
           model: Usuarios,
-          where: {
-            id_cidade: id_cidade,
-          },
+          where: usuariosWhere,
           include: [
             {
               model: Cidades,
               where: {
-                uf: uf,
+                uf: {
+                  [Op.like]: `%${uf}%`,
+                },
               },
             },
           ],
         },
       ],
-      limit: 10,
+      limit: 25,
+      order: sequelize.col('preco_produto', 'ASC'),
     });
 
     res.json(produtos);
