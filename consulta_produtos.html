@@ -76,6 +76,7 @@
       <thead>
         <th>Descrição do Produto</th>
         <th>Marca do Produto</th>
+        <th>Nome do Mercado</th>
         <th>Preço do Produto</th>
         <th>Observação do Produto</th>
         <th>Peso do Produto</th>
@@ -244,6 +245,9 @@
                           }</td>
                           <td style="text-align: left;">${
                             item.marca_produto
+                          }</td>
+                          <td style="text-align: left;">${
+                            item.nome_mercado
                           }</td>
                           <td style="text-align: right;">R$${item.preco_produto
                             .toFixed(2)

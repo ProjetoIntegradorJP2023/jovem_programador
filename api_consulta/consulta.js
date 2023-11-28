@@ -201,10 +201,24 @@ async function buscaProdutos(req, res) {
     }
 
     const produtos = await Produto.findAll({
+      attributes: [
+        'id_mercado',
+        'descricao_produto',
+        'preco_produto',
+        'observacao_produto',
+        'dt_cadastro',
+        'marca_produto',
+        'peso_produto',
+        'imagem',
+        'unid_medida_produto',
+        'updatedAt',
+        [sequelize.literal('usuario.nome'), 'nome_mercado'], // Inclui o nome do mercado
+      ],
       where: whereClause,
       include: [
         {
           model: Usuarios,
+          include: ['nome_mercado'],
           where: usuariosWhere,
           include: [
             {
