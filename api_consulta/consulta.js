@@ -30,7 +30,7 @@ const sequelize = new Sequelize({
   password: "1234",
 });
 
-app.listen(3000, async () => {
+app.listen(4000, async () => {
   await sequelize.authenticate();
   await sequelize.sync({ alter: true });
 });

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+<link rel="stylesheet" type="text/css" href="styles.css" />
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="img/shop.svg" id="icon" alt="User Icon" width="150" height="150"/>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login">
+        <br>
+      <input type="text" id="email" class="fadeIn second" name="login" placeholder="Email/Usuário">
+      <input type="password" id="senha" class="fadeIn third" name="login" placeholder="Senha">
+        <br><br>
+      <input type="submit" class="fadeIn fourth" value="Entrar">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+        <a class="underlineHover" href="cadastro.php">Quero me cadastrar</a><br>
+        <!-- <a class="underlineHover" href="#">Esqueceu a senha?</a> -->
+    </div>
+
+  </div>
+</div>
+    
+</body>
+
+<script>
+
+  function preencheFormulario(usuario){
+    document.getElementById("email").valeu = usuario.email;
+    document.getElementById("senha").valeu = usuario.senha;
+  }
+
+   function usuarioFormulario(){
+    return  {
+      email: document.getElementById("email").value,
+      senha: document.getElementById("senha").value
+    }
+  }
+
+
+
+async function logarUsuario(usuario) {
+  try {
+    const resposta = await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(usuario),
+    });
+
+    const respostaJson = await resposta.json();
+
+    if (respostaJson.token) {
+      // Armazenar o token no localStorage
+      localStorage.setItem('token', respostaJson.token);
+
+      // Redirecionar para a página index1.html
+      window.location.href = 'index1.html';
+    } else {
+      alert('Usuário não autorizado');
+    }
+  } catch (erro) {
+    console.error('Erro ao fazer login:', erro);
+    // Tratar o erro de acordo com os requisitos do seu aplicativo
+  }
+}
+
+
+  document.getElementById('login').addEventListener('submit', function(event){
+            event.preventDefault();
+            const usuario = usuarioFormulario()
+            logarUsuario(usuario);
+        });
+
+</script>
+</html>

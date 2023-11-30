@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Dashboard</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-bell"></i>
+          <span class="badge badge-warning navbar-badge">15</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> 4 new messages
+            <span class="float-right text-muted text-sm">3 mins</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> 8 friend requests
+            <span class="float-right text-muted text-sm">12 hours</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-file mr-2"></i> 3 new reports
+            <span class="float-right text-muted text-sm">2 days</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+         <!-- <i class="far fa-comments"></i>-->
+          <img src="img/person-circle.svg" alt="" width="37px">
+          <!--<span class="badge badge-danger navbar-badge">3</span>-->
+        </a>
+      </li>
+  <aside class="main-sidebar sidebar-white-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link">
+      <img src="img/shop.svg" alt="AdminLTE Logo" classs="brand-image img-circle elevation-3" style="opacity: .8" height="50" width="50">
+      <span class="brand-text font-weight-light">&nbsp;&nbsp;&nbsp;<b>ECONOMIZANDO</b></span>
+    </a>
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-header">_______________________________</li>
+          <li class="nav-item">
+            <a href="consulta_produtos.html" class="nav-link">
+              <!--<i class="fas fa-circle nav-icon"></i>-->
+              <img src="img/currency-dollar.svg" alt="">
+              <p>Consultar Preço</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <!--<i class="nav-icon fas fa-circle"></i>-->
+              <img src="img/basket.svg" alt="">
+              <p>
+                Produtos
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="cadastro_produtos.html" class="nav-link">
+                  <i class="far nav-icon"></i>
+                  <img src="img/pencil.svg" alt="">
+                  <p>Cadastrar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="lista_produtos.html" class="nav-link">
+                  <i class="far nav-icon"></i>
+                  <img src="img/list-ul.svg" alt="">
+                  <p>Lista de produtos</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+             <!-- <i class="nav-icon fas fa-circle"></i>-->
+              <img src="img/gear.svg" alt="">
+              <p>
+                Painel Administrativo
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="cadastro_usuarios.php" class="nav-link">
+                  <i class="far nav-icon"></i>
+                  <img src="img/pencil.svg" alt="">
+                  <p>Novo Cadastro</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="lista_cadastros.html" class="nav-link">
+                   <i class="far nav-icon"></i>
+                   <img src="img/list-ul.svg" alt="">
+                  <p>Lista de Cadastros</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <div class="content-wrapper">
+    <div class="card-header">
+      <h3 class="card-title">CADASTROS</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <table id="clienteTable" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Senha</th>
+          <th>Nascimento</th>
+          <th>CEP</th>
+          <th>Cidade</th>
+          <th>Bairro</th>
+          <th>Endereço</th>
+          <th>CPF/CPNJ</th>
+          <th>Tipo</th>
+          <th>Status</th>
+          <th>Excluir</th>
+          <th>Editar</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Senha</th>
+          <th>Nascimento</th>
+          <th>CEP</th>
+          <th>Cidade</th>
+          <th>Bairro</th>
+          <th>Endereço</th>
+          <th>CPF/CPNJ</th>
+          <th>Tipo</th>
+          <th>Status</th>
+          <th>Excluir</th>
+          <th>Editar</th>
+        </tfoot>
+      </table>
+      <div class="card-footer">
+        <a href="cadastro_usuarios.php">
+        <input type="submit" class="btn btn-primary" value="Novo Cadastro">
+        </a>  
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  </div>
+ 
+  <footer class="main-footer">
+
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+</body>
+<script>
+  async function getExample() {
+    const resposta = await fetch('http://localhost:3000/buscarClientes');
+    const dataHora = await resposta.json();
+
+    const table = document.getElementById('clienteTable').getElementsByTagName('tbody')[0];
+
+    dataHora.forEach(async (cliente) => {
+      const row = table.insertRow();
+      const nome = row.insertCell(0);
+      const email = row.insertCell(1);
+      const senha = row.insertCell(2);
+      const nascimento = row.insertCell(3);
+      const cep = row.insertCell(4);
+      const cidade = row.insertCell(5);
+      const bairro = row.insertCell(6);
+      const endereco = row.insertCell(7);
+      const cpf_cnpj = row.insertCell(8);
+      const tipo = row.insertCell(9);
+      const status = row.insertCell(10);
+      const excluir = row.insertCell(11);
+      const editar = row.insertCell(12);
+      const dtNascimento = new Date(cliente.dt_nascimento);
+    
+      function formatarDataParaBR(data) {
+        const dia = data.getDate().toString().padStart(2, '0');
+        const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Os meses começam de 0
+        const ano = data.getFullYear();
+
+        return `${dia}/${mes}/${ano}`;
+      }
+
+      function formatarCpfCnpj(numero) {
+        const cleaned = String(numero).replace(/\D/g, ''); // Remove caracteres não numéricos
+
+        if (cleaned.length === 11) {
+          return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        } else if (cleaned.length === 14) {
+          return cleaned.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+        } else {
+          return numero;
+        }
+      }
+
+      nome.innerHTML = cliente.nome;
+      email.innerHTML = cliente.email;
+      senha.innerHTML = cliente.senha;
+      nascimento.innerHTML = formatarDataParaBR(dtNascimento);
+      cep.innerHTML = cliente.cep;
+      bairro.innerHTML = cliente.bairro_usuario;
+      endereco.innerHTML = cliente.endereco_usuario;
+      cpf_cnpj.innerHTML = formatarCpfCnpj(cliente.cpf_cnpj);
+      if (cliente.tipo_usuario === 'M') {
+        tipo.innerHTML = 'Mercado';
+      } else if (cliente.tipo_usuario === 'U') {
+        tipo.innerHTML = 'Usuário';
+      } else {
+        tipo.innerHTML = 'Tipo desconhecido';
+      }
+
+      if (cliente.status === 'I') {
+        status.innerHTML = 'Inativo';
+      } else if (cliente.status === 'A') {
+        status.innerHTML = 'Ativo';
+      } else {
+        status.innerHTML = 'Status desconhecido';
+      }
+
+      async function obterNomeCidade(codigoCidade) {
+        const response = await fetch(`http://localhost:3000/api/buscarCidadePorCodigo/${codigoCidade}`);
+        const data = await response.json();
+        return {nomeCidade: data.nomeCidade, sgEstado: data.sgEstado};
+      }
+
+      const CidadeUsuario = await obterNomeCidade(cliente.id_cidade);
+      cidade.innerHTML = CidadeUsuario.nomeCidade + ` - ${CidadeUsuario.sgEstado}`;
+
+      const imgElement2 = document.createElement('img');
+      imgElement2.src = 'img/trash3-fill.svg';
+      imgElement2.width = 20;
+      imgElement2.height = 20;
+      excluir.appendChild(imgElement2);
+
+      async function deleteUsuario(id) {
+        const confirmDelete = window.confirm('Tem certeza de que deseja excluir este usuário?');
+        if (confirmDelete) {
+          try {
+            const response = await fetch(`http://localhost:3000/deleteUsuario/${id}`, {
+              method: 'DELETE',
+            });
+
+            if (response.ok) {
+              alert('Usuário excluído com sucesso');
+              window.location.reload();
+            } else {
+              alert('Erro ao excluir o Usuário');
+            }
+          } catch (error) {
+            console.error('Erro na requisição: ' + error);
+          }
+        }
+      }
+
+      excluir.addEventListener('click', () => {
+        const idUsuario = cliente.id;
+        deleteUsuario(idUsuario);
+      });
+
+      const imgElement3 = document.createElement('img');
+      imgElement3.src = 'img/pencil-fill.svg';
+      imgElement3.width = 20;
+      imgElement3.height = 20;
+      editar.appendChild(imgElement3);
+
+      editar.addEventListener('click', () => {
+        const idUsuario = cliente.id;
+        console.log(idUsuario);
+
+        localStorage.setItem('clienteParaEdicao', JSON.stringify(cliente));
+        window.location.href = 'edita_usuarios.php';
+      });
+
+    });
+  }
+
+  getExample();
+
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('OK')
+    const clienteParaEdicao = localStorage.getItem('clienteParaEdicao');
+    if (clienteParaEdicao) {
+      const clientes = JSON.parse(clienteParaEdicao);
+      preencherCampos(clientes);
+    }
+  });
+
+  function preencherCampos(cliente) {
+    document.getElementById('nome').value = cliente.nome;
+    document.getElementById('email').value = cliente.email;
+    document.getElementById('senha').value = cliente.senha;
+    document.getElementById('nascimento').value = cliente.dt_nascimento;
+    document.getElementById('cep').value = cliente.cep;
+    document.getElementById('cidade').value = cliente.id_cidade;
+    document.getElementById('bairro').value = cliente.bairro_usuario;
+    document.getElementById('endereco').value = cliente.endereco_usuarios;
+    document.getElementById('cpf_cnpj').value = cliente.cpf_cnpj;
+  }
+</script>
+
+
+</html>

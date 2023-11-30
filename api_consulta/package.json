@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5"
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "sequelize": "^6.35.1"
   }
 }
